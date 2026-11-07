@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: finwise-api
+    runtime: python
+    buildCommand: pip install -r backend/requirements-core.txt
+    preDeployCommand: python -m backend.bootstrap
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 'backend.app:create_app()'
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.14
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: RATELIMIT_STORAGE_URI
+        sync: false
+      - key: ENABLE_SEMANTIC_MEMORY
+        value: "false"

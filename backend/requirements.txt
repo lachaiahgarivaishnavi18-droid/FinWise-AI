@@ -1,0 +1,14 @@
+Flask>=3.1,<4
+Flask-SQLAlchemy>=3.1,<4
+Flask-JWT-Extended>=4.7,<5
+Flask-Cors>=6,<7
+Flask-Limiter[redis]>=3.12,<5
+psycopg[binary]>=3.2,<4
+pgvector>=0.4,<1
+numpy>=2.2,<3
+pandas>=2.2,<4
+scikit-learn>=1.6,<2
+joblib>=1.4,<2
+sentence-transformers>=3.4,<6
+gunicorn>=23,<24; platform_system != 'Windows'
+pytest>=8,<10

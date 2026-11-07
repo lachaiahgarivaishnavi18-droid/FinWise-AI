@@ -1,0 +1,13 @@
+.venv/
+.venv312/
+node_modules/
+dist/
+.git/
+.env*
+.pytest_cache/
+instance/
+backend/instance/
+backend/models_store/
+backend/tests/
+**/__pycache__/
+artifacts/

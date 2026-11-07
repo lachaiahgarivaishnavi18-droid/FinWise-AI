@@ -1,0 +1,38 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: finwise
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: finwise
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finwise"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  app:
+    build: .
+    ports: ["127.0.0.1:5000:5000"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://finwise:${POSTGRES_PASSWORD}@db:5432/finwise
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?Set JWT_SECRET_KEY}
+      CORS_ORIGINS: http://localhost:5000,http://127.0.0.1:5000
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      RATELIMIT_STORAGE_URI: redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command:
+      [
+        "sh",
+        "-c",
+        "python -m backend.bootstrap && gunicorn --bind 0.0.0.0:5000 --workers 2 --timeout 120 'backend.app:create_app()'",
+      ]
+  redis:
+    image: redis:7-alpine
+volumes:
+  postgres_data:

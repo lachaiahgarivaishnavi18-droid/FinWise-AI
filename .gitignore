@@ -1,0 +1,16 @@
+.venv/
+.venv312/
+.deploy/
+.vercel/
+node_modules/
+dist/
+__pycache__/
+.pytest_cache/
+.env
+*.db
+backend/instance/
+backend/models_store/
+*.joblib
+
+.vercel
+.env*
